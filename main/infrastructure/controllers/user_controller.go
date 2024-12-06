@@ -4,6 +4,7 @@ import (
 	"github.com/JoubertNatividade/FutClub/main/domain/commands"
 	"github.com/JoubertNatividade/FutClub/main/infrastructure/controllers/mappers"
 	"github.com/JoubertNatividade/FutClub/main/infrastructure/controllers/requests"
+	"github.com/gin-gonic/gin"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -18,14 +19,14 @@ func NewPlayerController(
 	return &PlayerController{command}
 }
 
-func (c *PlayerController) Create() error {
+func (self *PlayerController) Create(c *gin.Context) error {
 	var request requests.PlayerRequest
 	// if err := request.Validate(); err != nil {
 	// 	return err
 	// }
 
 	player := mappers.MapToEntityPlayer(request)
-	err := c.command.Create(player)
+	err := self.command.Create(player)
 	if err != nil {
 		log.Error(err)
 	}

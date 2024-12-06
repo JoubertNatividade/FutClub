@@ -2,10 +2,14 @@
 
 package main
 
+import "github.com/google/wire"
+
 func initApp() *App {
 	return nil
 }
 
-func (a *App) Run() {
-	a.controller.CreatePlayer()
+func (a *App) initApp() {
+	wire.Build(
+		NewApp,
+	)
 }

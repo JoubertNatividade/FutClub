@@ -10,6 +10,13 @@ func main() {
 
 	engine := helpers.GetRouters()
 
+	apps := initApp()
+
+	players := engine.Group("/player")
+	{
+		players.POST("", apps.controller.Create)
+	}
+
 	engine.Run(":3000")
 
 }
