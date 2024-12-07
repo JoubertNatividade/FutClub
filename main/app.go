@@ -3,9 +3,9 @@ package main
 import "github.com/JoubertNatividade/FutClub/main/infrastructure/controllers"
 
 type App struct {
-	controller controllers.PlayerController
+	playerController *controllers.PlayerController
 }
 
-func NewApp(controller controllers.PlayerController) *App {
-	return &App{controller}
+func NewApp(playerController *controllers.PlayerController) *App {
+	return &App{playerController: playerController}
 }
