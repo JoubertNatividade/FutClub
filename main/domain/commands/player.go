@@ -1,5 +1,7 @@
 package commands
 
-type PlayerInterface interface {
-	Create(user *PlayerCommand) error
+import "github.com/JoubertNatividade/FutClub/main/domain/entities"
+
+type IPlayerCommand interface {
+	CreateCommand(user *entities.Player) error
 }

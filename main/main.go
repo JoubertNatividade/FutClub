@@ -6,17 +6,16 @@ import (
 )
 
 func main() {
-	log.Info("starting aplication FutClub...")
+	log.Info("starting aplication Futt'Art...")
 
 	engine := helpers.GetRouters()
 
-	apps := initApp()
+	apps := initializeApp()
 
 	players := engine.Group("/player")
 	{
-		players.POST("", apps.controller.Create)
+		players.POST("", apps.playerController.Create)
 	}
 
 	engine.Run(":3000")
-
 }

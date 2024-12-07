@@ -2,33 +2,27 @@ package controllers
 
 import (
 	"github.com/JoubertNatividade/FutClub/main/domain/commands"
-	"github.com/JoubertNatividade/FutClub/main/infrastructure/controllers/mappers"
-	"github.com/JoubertNatividade/FutClub/main/infrastructure/controllers/requests"
 	"github.com/gin-gonic/gin"
-
-	log "github.com/sirupsen/logrus"
 )
 
 type PlayerController struct {
-	command commands.PlayerCommand
+	command commands.IPlayerCommand
 }
 
-func NewPlayerController(
-	command commands.PlayerCommand,
-) *PlayerController {
-	return &PlayerController{command}
+func NewPlayerController(command commands.IPlayerCommand) *PlayerController {
+	return &PlayerController{command: command}
 }
 
-func (self *PlayerController) Create(c *gin.Context) error {
-	var request requests.PlayerRequest
+func (self *PlayerController) Create(c *gin.Context) {
+	//var request requests.PlayerRequest
 	// if err := request.Validate(); err != nil {
 	// 	return err
 	// }
-
-	player := mappers.MapToEntityPlayer(request)
-	err := self.command.Create(player)
-	if err != nil {
-		log.Error(err)
-	}
-	return nil
+	//
+	//player := mappers.MapToEntityPlayer(request)
+	//err := self.command.Create(player)
+	//if err != nil {
+	//	log.Error(err)
+	//}
+	c.JSON(200, gin.H{"message": "ok"})
 }
