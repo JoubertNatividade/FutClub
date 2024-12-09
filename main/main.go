@@ -6,19 +6,14 @@ import (
 )
 
 func main() {
-
 	log.SetLevel(log.InfoLevel)
-
-	log.Info("starting aplication Futt'Art...")
+	log.Info("starting application Fut'Art...")
 
 	engine := helpers.GetRouters()
-
 	apps := initializeApp()
-
 	players := engine.Group("/player")
 	{
 		players.POST("", apps.playerController.Create)
 	}
-
 	engine.Run(":3000")
 }

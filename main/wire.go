@@ -11,6 +11,7 @@ import (
 
 func initializeApp() *App {
 	wire.Build(
+		ConnectionMySQL,
 		repositories.Container,
 		commands.Container,
 		controllers.Container,

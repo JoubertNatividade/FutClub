@@ -18,15 +18,18 @@ func NewPlayerController(command commands.IPlayerCommand) *PlayerController {
 }
 
 func (self *PlayerController) Create(c *gin.Context) {
+	log.Infof("starting create player controller...")
 	var request requests.PlayerRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
 		responses.BadRequest(c)
+		return
 	}
 
 	player := mappers.MapToEntityPlayer(request)
 	err := self.command.CreateCommand(player)
 	if err != nil {
-		log.Errorf("Error when try create player: %s", err)
+		responses.InternalServerError(c)
+		return
 	}
 	responses.Created(c)
 }

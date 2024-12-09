@@ -12,10 +12,15 @@ import (
 	"github.com/JoubertNatividade/FutClub/main/infrastructure/repositories"
 )
 
+import (
+	_ "github.com/go-sql-driver/mysql"
+)
+
 // Injectors from wire.go:
 
 func initializeApp() *App {
-	playerRepository := repositories.NewPlayerRepository()
+	db := ConnectionMySQL()
+	playerRepository := repositories.NewPlayerRepository(db)
 	playerCommand := commands.NewPlayerCommand(playerRepository)
 	playerController := controllers.NewPlayerController(playerCommand)
 	app := NewApp(playerController)
