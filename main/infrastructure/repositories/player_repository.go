@@ -19,9 +19,12 @@ func NewPlayerRepository(
 
 func (r *PlayerRepository) Create(player *entities.Player) error {
 	log.Info("starting create repository...")
+	log.Infof("--player received: %+v", player)
 	_, err := r.db.Query("INSERT INTO player(name, last_name, position) VALUES(?,?,?)", player.Name, player.LastName, player.Position)
 	if err != nil {
+		log.Errorf("error on create player: %s", err)
 		return err
 	}
+	log.Infof("player %s created successfully", player.Name)
 	return nil
 }

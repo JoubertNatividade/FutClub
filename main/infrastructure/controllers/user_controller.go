@@ -21,6 +21,7 @@ func (self *PlayerController) Create(c *gin.Context) {
 	log.Infof("starting create player controller...")
 	var request requests.PlayerRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
+		log.Errorf("error on bind request: %s", err)
 		responses.BadRequest(c)
 		return
 	}
@@ -28,6 +29,7 @@ func (self *PlayerController) Create(c *gin.Context) {
 	player := mappers.MapToEntityPlayer(request)
 	err := self.command.CreateCommand(player)
 	if err != nil {
+		log.Errorf("player controller -> create ->error on create player: %s", err)
 		responses.InternalServerError(c)
 		return
 	}
