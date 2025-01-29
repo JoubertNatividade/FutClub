@@ -1,7 +1,9 @@
 package entities
 
 type Player struct {
-	Name     string
-	Position string
-	LastName string
+	PlayerID  int
+	Name      string
+	LastName  string
+	Position  string
+	CreatedAt string
 }

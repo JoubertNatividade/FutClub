@@ -14,6 +14,7 @@ func main() {
 	players := engine.Group("/player")
 	{
 		players.POST("", apps.playerController.Create)
+		players.GET("", apps.playerController.List)
 	}
 	engine.Run(":3000")
 }

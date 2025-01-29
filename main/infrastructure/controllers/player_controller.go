@@ -29,9 +29,20 @@ func (self *PlayerController) Create(c *gin.Context) {
 	player := mappers.MapToEntityPlayer(request)
 	err := self.command.CreateCommand(player)
 	if err != nil {
-		log.Errorf("player controller -> create ->error on create player: %s", err)
+		log.Errorf("player controller -> create: %s", err)
 		responses.InternalServerError(c)
 		return
 	}
 	responses.Created(c)
+}
+
+func (self *PlayerController) List(c *gin.Context) {
+	log.Infof("starting list all player controller...")
+	players, err := self.command.ListCommand()
+	if err != nil {
+		log.Errorf("player controller -> list: %s", err)
+		responses.InternalServerError(c)
+		return
+	}
+	responses.Success(c, players)
 }

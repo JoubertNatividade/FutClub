@@ -28,3 +28,35 @@ func (r *PlayerRepository) Create(player *entities.Player) error {
 	log.Infof("player %s created successfully", player.Name)
 	return nil
 }
+func (r *PlayerRepository) List() ([]entities.Player, error) {
+	log.Info("Starting list repository...")
+
+	query := "SELECT player_id, name, last_name, position, created_at FROM player"
+	rows, err := r.db.Query(query)
+	if err != nil {
+		log.Errorf("Error listing players: %s", err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	var players []entities.Player
+
+	for rows.Next() {
+		var player entities.Player
+		err = rows.Scan(&player.PlayerID, &player.Name, &player.LastName, &player.Position, &player.CreatedAt)
+		if err != nil {
+			log.Errorf("Error scanning player: %s", err)
+			continue
+		}
+		players = append(players, player)
+	}
+
+	if err = rows.Err(); err != nil {
+		log.Errorf("Error iterating over players: %s", err)
+		return nil, err
+	}
+
+	log.Infof("Quantity of players found: %d", len(players))
+
+	return players, nil
+}

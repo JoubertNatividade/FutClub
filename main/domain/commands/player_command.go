@@ -18,3 +18,8 @@ func (c PlayerCommand) CreateCommand(user *entities.Player) error {
 	log.Info("starting create command...")
 	return c.repository.Create(user)
 }
+
+func (c PlayerCommand) ListCommand() ([]entities.Player, error) {
+	log.Info("starting list command...")
+	return c.repository.List()
+}
