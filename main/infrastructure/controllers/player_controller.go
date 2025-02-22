@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"strconv"
+	"strings"
 
 	"github.com/JoubertNatividade/FutClub/global/infrastructure/responses"
 	"github.com/JoubertNatividade/FutClub/main/domain/commands"
@@ -27,10 +28,16 @@ func (pc *PlayerController) Create(c *gin.Context) {
 		responses.BadRequest(c)
 		return
 	}
+	log.Infof("--request received in create controller: %+v", request)
 
 	player := mappers.MapToEntityPlayer(request)
 	err := pc.command.CreateCommand(player)
 	if err != nil {
+		if strings.Contains(err.Error(), "player already exist") {
+			log.Errorf("player %s %s - %s already exist", player.Name, player.LastName, player.Position)
+			responses.Conflict(c)
+			return
+		}
 		log.Errorf("player controller -> create: %s", err)
 		responses.InternalServerError(c)
 		return

@@ -1,13 +1,15 @@
 package commands
 
 import (
+	"fmt"
+
 	"github.com/JoubertNatividade/FutClub/main/domain/entities"
 	"github.com/JoubertNatividade/FutClub/main/domain/interfaces"
 	log "github.com/sirupsen/logrus"
 )
 
 type IPlayerCommand interface {
-	CreateCommand(user *entities.Player) error
+	CreateCommand(player *entities.Player) error
 	ListCommand() ([]entities.Player, error)
 	FindByIDCommand(id int) (*entities.Player, error)
 }
@@ -20,9 +22,16 @@ func NewPlayerCommand(repository interfaces.IPlayerRepository) PlayerCommand {
 	return PlayerCommand{repository}
 }
 
-func (c PlayerCommand) CreateCommand(user *entities.Player) error {
+func (c PlayerCommand) CreateCommand(player *entities.Player) error {
 	log.Info("starting create command...")
-	return c.repository.Create(user)
+	isPlayer, err := c.repository.FindByPlayer(player)
+	if err != nil {
+		return fmt.Errorf("could not find playe %s %s. Here is the reason: %s", player.Name, player.LastName, err)
+	}
+	if isPlayer.PlayerID != 0 {
+		return fmt.Errorf("player already exist")
+	}
+	return c.repository.Create(player)
 }
 
 func (c PlayerCommand) ListCommand() ([]entities.Player, error) {

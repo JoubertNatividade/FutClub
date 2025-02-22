@@ -96,3 +96,27 @@ func (r *PlayerRepository) FindByID(id int) (*entities.Player, error) {
 	log.Infof("Player found: %+v success!", Player)
 	return &Player, nil
 }
+
+func (r *PlayerRepository) FindByPlayer(player *entities.Player) (*entities.Player, error) {
+	log.Info("Starting find by player repository...")
+
+	query := "SELECT player_id, name, last_name, position, avatar_url, created_at FROM player WHERE name =? AND last_name =? AND position = ?"
+	log.Infof("trying to find user with name: %s, last name: %s and position: %s ...", player.Name, player.LastName, player.Position)
+	row := r.db.QueryRow(query, player.Name, player.LastName, player.Position)
+
+	var Player entities.Player
+	err := row.Scan(
+		&Player.PlayerID,
+		&Player.Name,
+		&Player.LastName,
+		&Player.Position,
+		&Player.AvatarURL,
+		&Player.CreatedAt,
+	)
+	if err != nil {
+		log.Errorf("Error scanning player: %s", err)
+		return nil, err
+	}
+	log.Infof("Player found: %+v success!", Player)
+	return &Player, nil
+}
