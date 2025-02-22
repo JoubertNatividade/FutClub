@@ -15,6 +15,7 @@ func main() {
 	{
 		players.POST("", apps.playerController.Create)
 		players.GET("", apps.playerController.List)
+		players.GET("/:id", apps.playerController.FindByID)
 	}
 	engine.Run(":3000")
 }
