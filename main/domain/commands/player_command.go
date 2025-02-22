@@ -6,6 +6,12 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+type IPlayerCommand interface {
+	CreateCommand(user *entities.Player) error
+	ListCommand() ([]entities.Player, error)
+	FindByIDCommand(id int) (*entities.Player, error)
+}
+
 type PlayerCommand struct {
 	repository interfaces.IPlayerRepository
 }
@@ -22,4 +28,10 @@ func (c PlayerCommand) CreateCommand(user *entities.Player) error {
 func (c PlayerCommand) ListCommand() ([]entities.Player, error) {
 	log.Info("starting list command...")
 	return c.repository.List()
+}
+
+func (c PlayerCommand) FindByIDCommand(id int) (*entities.Player, error) {
+	log.Info("starting find by id command...")
+	log.Infof("--id received:  %d in FindByIDCommand", id)
+	return c.repository.FindByID(id)
 }

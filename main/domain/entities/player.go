@@ -5,5 +5,6 @@ type Player struct {
 	Name      string
 	LastName  string
 	Position  string
+	AvatarURL string
 	CreatedAt string
 }

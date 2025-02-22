@@ -10,7 +10,7 @@ CREATE DATABASE IF NOT EXISTS player (
 	name VARCHAR(50) NOT NULL,
 	last_name VARCHAR(50) NOT NULL,
 	position VARCHAR(50),
-	url_avatar VARCHAR(255),
+	avatar_url VARCHAR(255),
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
