@@ -12,6 +12,7 @@ type IPlayerCommand interface {
 	CreateCommand(player *entities.Player) error
 	ListCommand() ([]entities.Player, error)
 	FindByIDCommand(id int) (*entities.Player, error)
+	UpdateCommand(id int, player *entities.Player) error
 }
 
 type PlayerCommand struct {
@@ -43,4 +44,16 @@ func (c PlayerCommand) FindByIDCommand(id int) (*entities.Player, error) {
 	log.Info("starting find by id command...")
 	log.Infof("--id received:  %d in FindByIDCommand", id)
 	return c.repository.FindByID(id)
+}
+
+func (c PlayerCommand) UpdateCommand(id int, player *entities.Player) error {
+	log.Info("starting update command...")
+	isPlayer, err := c.repository.FindByID(id)
+	if err != nil {
+		return fmt.Errorf("could not find playe %s %s. Here is the reason: %s", player.Name, player.LastName, err)
+	}
+	if isPlayer.PlayerID != 0 {
+		return fmt.Errorf("player already exist")
+	}
+	return c.repository.Update(id, player)
 }

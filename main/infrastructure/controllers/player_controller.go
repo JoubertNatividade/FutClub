@@ -78,3 +78,33 @@ func (pc *PlayerController) FindByID(c *gin.Context) {
 	}
 	responses.Success(c, player)
 }
+
+func (pc *PlayerController) Update(c *gin.Context) {
+	log.Infof("starting update player controller...")
+
+	idParse, _ := strconv.Atoi(c.Param("id"))
+	if idParse == 0 {
+		log.Error("id is required")
+		responses.BadRequest(c)
+		return
+	}
+
+	var request requests.PlayerRequest
+	if err := c.ShouldBindJSON(&request); err != nil {
+		log.Errorf("error on bind request: %s", err)
+		responses.BadRequest(c)
+		return
+	}
+	log.Infof("--id received in update controller: %d", idParse)
+	log.Infof("--request received in update controller: %+v", request)
+
+	player := mappers.MapToEntityPlayer(request)
+
+	err := pc.command.UpdateCommand(idParse, player)
+	if err != nil {
+		log.Errorf("player controller -> update: %s", err)
+		responses.InternalServerError(c)
+		return
+	}
+	responses.Success(c, "")
+}

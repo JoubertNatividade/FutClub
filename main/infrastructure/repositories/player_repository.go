@@ -120,3 +120,17 @@ func (r *PlayerRepository) FindByPlayer(player *entities.Player) (*entities.Play
 	log.Infof("Player found: %+v success!", Player)
 	return &Player, nil
 }
+
+func (r *PlayerRepository) Update(id int, player *entities.Player) error {
+	log.Info("Starting update repository...")
+	log.Infof("--player received: %+v", player)
+	_, err := r.db.Query("UPDATE player SET name = ?, last_name = ?, position = ?, avatar_url = ? WHERE player_id = ?",
+		player.Name, player.LastName, player.Position, player.AvatarURL, id)
+
+	if err != nil {
+		log.Errorf("error on update player: %s", err)
+		return err
+	}
+	log.Infof("player %s updated successfully", player.Name)
+	return nil
+}

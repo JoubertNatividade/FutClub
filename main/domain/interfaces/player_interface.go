@@ -7,4 +7,5 @@ type IPlayerRepository interface {
 	List() ([]entities.Player, error)
 	FindByID(id int) (*entities.Player, error)
 	FindByPlayer(player *entities.Player) (*entities.Player, error)
+	Update(id int, player *entities.Player) error
 }
