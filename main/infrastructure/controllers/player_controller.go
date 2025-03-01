@@ -108,3 +108,22 @@ func (pc *PlayerController) Update(c *gin.Context) {
 	}
 	responses.Success(c, "")
 }
+
+func (pc *PlayerController) Delete(c *gin.Context) {
+	log.Infof("starting delete player controller...")
+
+	idParse, _ := strconv.Atoi(c.Param("id"))
+	if idParse == 0 {
+		log.Error("id is required")
+		responses.BadRequest(c)
+		return
+	}
+
+	err := pc.command.DeleteCommand(idParse)
+	if err != nil {
+		log.Errorf("player controller -> delete: %s", err)
+		responses.InternalServerError(c)
+		return
+	}
+	responses.Success(c, "")
+}

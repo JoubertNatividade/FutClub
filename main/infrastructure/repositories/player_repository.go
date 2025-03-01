@@ -134,3 +134,15 @@ func (r *PlayerRepository) Update(id int, player *entities.Player) error {
 	log.Infof("player %s updated successfully", player.Name)
 	return nil
 }
+
+func (r *PlayerRepository) Delete(id int) error {
+	log.Info("Starting delete repository...")
+	log.Infof("--id received %d to delete...", id)
+	_, err := r.db.Query("DELETE FROM player WHERE player_id = ?", id)
+	if err != nil {
+		log.Errorf("error on delete player: %s", err)
+		return err
+	}
+	log.Infof("player with id %d deleted successfully", id)
+	return nil
+}
